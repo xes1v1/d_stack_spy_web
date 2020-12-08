@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dstack_spy_web/socket/service.dart';
 import 'package:dstack_spy_web/spy_body.dart';
 import 'package:flutter/material.dart';
