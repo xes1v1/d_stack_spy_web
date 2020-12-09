@@ -1,10 +1,13 @@
-import 'package:dstack_spy_web/entity.dart';
+
+import 'package:dstack_spy_web/model/image_entity.dart';
+import 'package:dstack_spy_web/model/node_entity.dart';
+import 'package:dstack_spy_web/provider/provider_manager.dart';
 
 /// Created by shiyucheng on 2020/12/8
-typedef OnReceive = void Function(NodeData data);
 
 class MessageHandler {
   MessageHandler._();
+
   static MessageHandler _instance;
 
   static MessageHandler getInstance() {
@@ -14,56 +17,71 @@ class MessageHandler {
     return _instance;
   }
 
-  List<OnReceive> observers = [];
-
-  void handle(NodeData data) {
-    observers.forEach((element) {
-      element.call(data);
-    });
+  void handleNode(NodeEntity nodeEntity) {
+    switch (nodeEntity.action) {
+      case ActionType.actionTypePush:
+      case ActionType.actionTypePresent:
+        ProviderManager.getInstance().nodeProvider.push(nodeEntity);
+        break;
+      case ActionType.actionTypePop:
+      case ActionType.actionTypeDidPop:
+      case ActionType.actionTypeGesture:
+      case ActionType.actionTypeDissmiss:
+        ProviderManager.getInstance().nodeProvider.pop(nodeEntity);
+        break;
+      case ActionType.actionTypePopTo:
+        ProviderManager.getInstance().nodeProvider.popTo(nodeEntity);
+        break;
+      case ActionType.actionTypePopSkip:
+        ProviderManager.getInstance().nodeProvider.popSkip(nodeEntity);
+        break;
+      case ActionType.actionTypePopToRoot:
+        ProviderManager.getInstance().nodeProvider.popToRoot(nodeEntity);
+        break;
+      case ActionType.actionTypeReplace:
+        ProviderManager.getInstance().nodeProvider.replace(nodeEntity);
+        break;
+    }
   }
 
-  void addObserver(OnReceive receiver) {
-    observers.add(receiver);
-  }
-
-  void removeObserver(OnReceive receiver) {
-    observers.remove(receiver);
-  }
+  void handleImage(ImageEntity imageEntity) {}
 }
 
 ///消息类型
 class MessageType {
-  static const node = "node";
+  static const node = 'node';
+  static const image = 'screenshot';
 }
 
+///节点动作类型
 class ActionType {
   // push跳转android
-  static const String actionTypePush = "push";
+  static const String actionTypePush = 'push';
 
   // present跳转(ios独有)
-  static const String actionTypePresent = "present";
+  static const String actionTypePresent = 'present';
 
   // pop返回android
-  static const String actionTypePop = "pop";
+  static const String actionTypePop = 'pop';
 
   // didPop返回android
-  static const String actionTypeDidPop = "didPop";
+  static const String actionTypeDidPop = 'didPop';
 
   // popTo 返回
-  static const String actionTypePopTo = "popTo";
+  static const String actionTypePopTo = 'popTo';
 
   // PopToRoot
-  static const String actionTypePopToRoot = "popToRoot";
+  static const String actionTypePopToRoot = 'popToRoot';
 
   // PopSkip
-  static const String actionTypePopSkip = "popSkip";
+  static const String actionTypePopSkip = 'popSkip';
 
   // 手势
-  static const String actionTypeGesture = "gesture";
+  static const String actionTypeGesture = 'gesture';
 
   // Dissmiss返回(ios独有)
-  static const String actionTypeDissmiss = "dissmiss";
+  static const String actionTypeDissmiss = 'dissmiss';
 
   //replace
-  static const String actionTypeReplace = "replace";
+  static const String actionTypeReplace = 'replace';
 }

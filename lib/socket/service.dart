@@ -1,6 +1,7 @@
 import 'dart:convert';
 
-import 'package:dstack_spy_web/entity.dart';
+import 'package:dstack_spy_web/model/image_entity.dart';
+import 'package:dstack_spy_web/model/node_entity.dart';
 import 'package:dstack_spy_web/socket/message_handler.dart';
 
 import 'connect.dart';
@@ -42,9 +43,22 @@ class Service {
     connector.send(data);
   }
 
-  SocketConnectReceiver _receiver = (dynamic data) {
-    Map map = jsonDecode(data);
-    var node = NodeEntity.fromJson(map);
-    MessageHandler.getInstance().handle(node.data);
+  SocketConnectReceiver _receiver = (dynamic message) {
+    Map map = jsonDecode(message);
+    Map data = map['data'];
+    String messageType = map['messageType'];
+    if (messageType == null || messageType.isEmpty) {
+      return;
+    }
+    switch (messageType) {
+      case MessageType.node:
+        NodeEntity nodeEntity = NodeEntity.fromJson(data);
+        MessageHandler.getInstance().handleNode(nodeEntity);
+        break;
+      case MessageType.image:
+        ImageEntity imageEntity = ImageEntity.fromJson(data);
+        MessageHandler.getInstance().handleImage(imageEntity);
+        break;
+    }
   };
 }
