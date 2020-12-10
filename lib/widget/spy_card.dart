@@ -1,8 +1,13 @@
+import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:dstack_spy_web/model/node_entity.dart';
+import 'package:dstack_spy_web/provider/image_provider.dart';
+import 'package:dstack_spy_web/provider/provider_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:infinite_cards/infinite_cards.dart';
+import 'package:provider/provider.dart';
 
 class SpyCardWidget extends StatefulWidget {
   @override
@@ -17,16 +22,28 @@ class _SpyCardWidgetState extends State<SpyCardWidget> {
     super.initState();
     _controller = InfiniteCardsController(
       itemBuilder: _renderItem,
-      itemCount: 7,
+      itemCount: 0,
       animType: AnimType.TO_END,
     );
   }
 
   Widget _renderItem(BuildContext context, int index) {
-    return Image(
+    List<NodeEntity> nodes = ProviderManager.getInstance().imageProvider.nodes;
+    NodeEntity nodeEntity = nodes[index];
+    String image = nodeEntity.base64;
+    if (image == null || image.isEmpty) {
+      return Image(
+        width: 360,
+        height: 660,
+        image: AssetImage('pic/pic${index + 1}.png'),
+      );
+    }
+    String base64img = image.split(',')[1];
+    return Image.memory(
+      base64.decode(base64img),
       width: 360,
       height: 660,
-      image: AssetImage('pic/pic${index + 1}.png'),
+      gaplessPlayback: true,
     );
   }
 
@@ -34,41 +51,46 @@ class _SpyCardWidgetState extends State<SpyCardWidget> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height / 1.4;
     double width = height / 1;
-    return Container(
-      color: Colors.cyan,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          InfiniteCards(
-             background: Colors.cyan,
-            width: width,
-            height: height,
-            controller: _controller,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+    return Consumer<SnapShotProvider>(
+      builder: (context, data, child) {
+        print('data: ${data.nodes.length}');
+        _controller.itemCount = data.nodes.length;
+        return Container(
+          child: Column(
+            key: UniqueKey(),
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              RaisedButton(
-                onPressed: () {
-                  _controller.reset(animType: AnimType.TO_FRONT);
-                  _controller.previous();
-                },
-                child: Text("Pre"),
+              InfiniteCards(
+                width: width,
+                height: height,
+                controller: _controller,
               ),
-              RaisedButton(
-                onPressed: () {
-                  _controller.reset(
-                    animType: AnimType.TO_END,
-                    transformToBack: _customToBackTransform,
-                  );
-                  _controller.next();
-                },
-                child: Text("Next"),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  RaisedButton(
+                    onPressed: () {
+                      _controller.reset(animType: AnimType.TO_FRONT);
+                      _controller.previous();
+                    },
+                    child: Text("Pre"),
+                  ),
+                  RaisedButton(
+                    onPressed: () {
+                      _controller.reset(
+                        animType: AnimType.TO_END,
+                        transformToBack: _customToBackTransform,
+                      );
+                      _controller.next();
+                    },
+                    child: Text("Next"),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

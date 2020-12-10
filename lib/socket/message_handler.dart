@@ -1,4 +1,3 @@
-
 import 'package:dstack_spy_web/model/image_entity.dart';
 import 'package:dstack_spy_web/model/node_entity.dart';
 import 'package:dstack_spy_web/provider/provider_manager.dart';
@@ -18,6 +17,8 @@ class MessageHandler {
   }
 
   void handleNode(NodeEntity nodeEntity) {
+    nodeEntity.action = nodeEntity.action.toLowerCase();
+    nodeEntity.pageType = nodeEntity.pageType.toLowerCase();
     switch (nodeEntity.action) {
       case ActionType.actionTypePush:
       case ActionType.actionTypePresent:
@@ -44,7 +45,10 @@ class MessageHandler {
     }
   }
 
-  void handleImage(ImageEntity imageEntity) {}
+  void handleImage(ImageEntity imageEntity) {
+    ProviderManager.getInstance().imageProvider.save(imageEntity);
+
+  }
 }
 
 ///消息类型

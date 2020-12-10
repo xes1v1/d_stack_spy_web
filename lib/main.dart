@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:dstack_spy_web/provider/provider_manager.dart';
 import 'package:dstack_spy_web/socket/service.dart';
@@ -13,6 +12,8 @@ void main() {
       providers: [
         ChangeNotifierProvider(
             create: (context) => ProviderManager.getInstance().nodeProvider),
+        ChangeNotifierProvider(
+            create: (context) => ProviderManager.getInstance().imageProvider),
       ],
       child: MyApp(),
     ),

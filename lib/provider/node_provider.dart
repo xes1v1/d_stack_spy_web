@@ -1,4 +1,5 @@
 import 'package:dstack_spy_web/model/node_entity.dart';
+import 'package:dstack_spy_web/provider/provider_manager.dart';
 import 'package:flutter/material.dart';
 
 class NodeProvider extends ChangeNotifier {
@@ -9,6 +10,7 @@ class NodeProvider extends ChangeNotifier {
   void push(NodeEntity node) {
     nodes.insert(0, node);
     notifyListeners();
+    ProviderManager.getInstance().imageProvider.action(nodes);
   }
 
   void pop(NodeEntity nodeEntity) {
@@ -17,6 +19,7 @@ class NodeProvider extends ChangeNotifier {
     }
     _nodes.removeAt(0);
     notifyListeners();
+    ProviderManager.getInstance().imageProvider.action(nodes);
   }
 
   void popTo(NodeEntity nodeEntity) {
@@ -36,6 +39,7 @@ class NodeProvider extends ChangeNotifier {
     }
     _nodes.removeRange(0, index);
     notifyListeners();
+    ProviderManager.getInstance().imageProvider.action(nodes);
   }
 
   void popSkip(NodeEntity nodeEntity) {
@@ -53,6 +57,7 @@ class NodeProvider extends ChangeNotifier {
       _nodes.remove(nodeEntity);
     }
     notifyListeners();
+    ProviderManager.getInstance().imageProvider.action(nodes);
   }
 
   void popToRoot(NodeEntity nodeEntity) {
@@ -61,6 +66,7 @@ class NodeProvider extends ChangeNotifier {
     }
     _nodes.removeRange(1, _nodes.length);
     notifyListeners();
+    ProviderManager.getInstance().imageProvider.action(nodes);
   }
 
   void replace(NodeEntity nodeEntity) {
@@ -69,5 +75,6 @@ class NodeProvider extends ChangeNotifier {
     }
     _nodes[0] = nodeEntity;
     notifyListeners();
+    ProviderManager.getInstance().imageProvider.action(nodes);
   }
 }
