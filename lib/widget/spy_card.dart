@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:math' as math;
 
+import 'package:dstack_spy_web/infinitecard/infinite_card_view.dart';
+import 'package:dstack_spy_web/infinitecard/infinite_cards_controller.dart';
 import 'package:dstack_spy_web/model/node_entity.dart';
 import 'package:dstack_spy_web/provider/image_provider.dart';
 import 'package:dstack_spy_web/provider/provider_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:infinite_cards/infinite_cards.dart';
 import 'package:provider/provider.dart';
 
 class SpyCardWidget extends StatefulWidget {

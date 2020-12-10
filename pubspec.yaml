@@ -24,8 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  infinite_cards: ^1.0.3
-
   web_socket_channel: ^1.1.0
 
   provider: ^4.3.2+3
