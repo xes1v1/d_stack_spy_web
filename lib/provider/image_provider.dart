@@ -1,5 +1,6 @@
 import 'package:dstack_spy_web/model/image_entity.dart';
 import 'package:dstack_spy_web/model/node_entity.dart';
+import 'package:dstack_spy_web/provider/provider_manager.dart';
 import 'package:flutter/material.dart';
 
 class SnapShotProvider extends ChangeNotifier {
@@ -16,6 +17,7 @@ class SnapShotProvider extends ChangeNotifier {
   void action(List<NodeEntity> nodes) {
     _nodes = nodes;
     notifyListeners();
+    ProviderManager.getInstance().pageInfoProvider.action(_previewNode);
   }
 
   void save(ImageEntity imageEntity) {
@@ -28,6 +30,7 @@ class SnapShotProvider extends ChangeNotifier {
     }
     _previewNode = _nodes[0];
     notifyListeners();
+    ProviderManager.getInstance().pageInfoProvider.action(_previewNode);
   }
 
   void previous() {
@@ -35,6 +38,7 @@ class SnapShotProvider extends ChangeNotifier {
     _nodes.removeLast();
     _nodes.insert(0, nodeEntity);
     _previewNode = _nodes[0];
+    ProviderManager.getInstance().pageInfoProvider.action(_previewNode);
   }
 
   void next() {
@@ -42,5 +46,6 @@ class SnapShotProvider extends ChangeNotifier {
     _nodes.removeAt(0);
     _nodes.insert(_nodes.length, nodeEntity);
     _previewNode = _nodes[0];
+    ProviderManager.getInstance().pageInfoProvider.action(_previewNode);
   }
 }

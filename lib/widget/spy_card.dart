@@ -5,6 +5,7 @@ import 'package:dstack_spy_web/infinitecard/infinite_card_view.dart';
 import 'package:dstack_spy_web/infinitecard/infinite_cards_controller.dart';
 import 'package:dstack_spy_web/model/node_entity.dart';
 import 'package:dstack_spy_web/provider/image_provider.dart';
+import 'package:dstack_spy_web/provider/pageinfo_provider.dart';
 import 'package:dstack_spy_web/provider/provider_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -53,8 +54,6 @@ class _SpyCardWidgetState extends State<SpyCardWidget> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height / 1.4;
     double width = height / 1;
-    NodeEntity previewNode =
-        ProviderManager.getInstance().imageProvider.previewNode;
     return Container(
         child: Stack(
       alignment: Alignment.center,
@@ -99,13 +98,15 @@ class _SpyCardWidgetState extends State<SpyCardWidget> {
             )),
         Positioned(
             bottom: 30,
-            child: Container(
-              margin: EdgeInsets.only(top: 15),
-              child: Text(
-                previewNode == null ? "" : previewNode.target,
-                style: TextStyle(color: Color(0xFF212121), fontSize: 28),
-              ),
-            )),
+            child: Consumer<PageInfoProvider>(builder: (context, data, child) {
+              return Container(
+                margin: EdgeInsets.only(top: 15),
+                child: Text(
+                  data?.previewNode == null ? "" : data.previewNode.target,
+                  style: TextStyle(color: Color(0xFF212121), fontSize: 28),
+                ),
+              );
+            })),
       ],
     ));
   }

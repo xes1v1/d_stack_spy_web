@@ -14,6 +14,8 @@ void main() {
             create: (context) => ProviderManager.getInstance().nodeProvider),
         ChangeNotifierProvider(
             create: (context) => ProviderManager.getInstance().imageProvider),
+        ChangeNotifierProvider(
+            create: (context) => ProviderManager.getInstance().pageInfoProvider),
       ],
       child: MyApp(),
     ),
