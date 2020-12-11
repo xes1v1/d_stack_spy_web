@@ -33,14 +33,15 @@ class _SpyListWidgetState extends State<SpyListWidget> {
                 color: backgroundColor,
                 padding: EdgeInsets.all(10),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Row(
                       children: [
                         Text(
                           '路由：',
-                          style:
-                              TextStyle(color: textTitleColor, fontSize: 18),
+                          style: TextStyle(
+                              color: textTitleColor, fontSize: 18),
                         ),
                         Text(
                           nodeEntity.target,
@@ -52,8 +53,8 @@ class _SpyListWidgetState extends State<SpyListWidget> {
                       children: [
                         Text(
                           '页面类型：',
-                          style:
-                              TextStyle(color: textTitleColor, fontSize: 18),
+                          style: TextStyle(
+                              color: textTitleColor, fontSize: 18),
                         ),
                         Text(
                           nodeEntity.pageType,
@@ -65,8 +66,8 @@ class _SpyListWidgetState extends State<SpyListWidget> {
                       children: [
                         Text(
                           '参数：',
-                          style:
-                              TextStyle(color: textTitleColor, fontSize: 18),
+                          style: TextStyle(
+                              color: textTitleColor, fontSize: 18),
                         ),
                         Text(
                           paramsStr,
@@ -78,8 +79,8 @@ class _SpyListWidgetState extends State<SpyListWidget> {
                       children: [
                         Text(
                           '页面唯一id：',
-                          style:
-                              TextStyle(color: textTitleColor, fontSize: 18),
+                          style: TextStyle(
+                              color: textTitleColor, fontSize: 18),
                         ),
                         Text(
                           nodeEntity.identifier,

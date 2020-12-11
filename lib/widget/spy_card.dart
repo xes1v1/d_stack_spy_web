@@ -25,6 +25,7 @@ class _SpyCardWidgetState extends State<SpyCardWidget> {
       itemBuilder: _renderItem,
       itemCount: 0,
       animType: AnimType.TO_END,
+      clickItemToSwitch: true,
     );
   }
 
@@ -36,7 +37,7 @@ class _SpyCardWidgetState extends State<SpyCardWidget> {
       return Image(
         width: 360,
         height: 660,
-        image: AssetImage('pic/pic${index + 1}.png'),
+        image: AssetImage('pic/loading.png'),
       );
     }
     String base64img = image.split(',')[1];
@@ -52,47 +53,61 @@ class _SpyCardWidgetState extends State<SpyCardWidget> {
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height / 1.4;
     double width = height / 1;
-    return Consumer<SnapShotProvider>(
-      builder: (context, data, child) {
-        print('data: ${data.nodes.length}');
-        _controller.itemCount = data.nodes.length;
-        return Container(
-          child: Column(
-            key: UniqueKey(),
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              InfiniteCards(
+    NodeEntity previewNode =
+        ProviderManager.getInstance().imageProvider.previewNode;
+    return Container(
+        child: Stack(
+      alignment: Alignment.center,
+      children: [
+        Consumer<SnapShotProvider>(
+          builder: (context, data, child) {
+            _controller.itemCount = data.nodes.length;
+            return Container(
+              key: UniqueKey(),
+              child: InfiniteCards(
                 width: width,
                 height: height,
                 controller: _controller,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  RaisedButton(
-                    onPressed: () {
-                      _controller.reset(animType: AnimType.TO_FRONT);
-                      _controller.previous();
-                    },
-                    child: Text("Pre"),
-                  ),
-                  RaisedButton(
-                    onPressed: () {
-                      _controller.reset(
-                        animType: AnimType.TO_END,
-                        transformToBack: _customToBackTransform,
-                      );
-                      _controller.next();
-                    },
-                    child: Text("Next"),
-                  ),
-                ],
+            );
+          },
+        ),
+        Positioned(
+            left: 30,
+            child: IconButton(
+              icon: Icon(Icons.arrow_back_ios),
+              color: Colors.red,
+              onPressed: () {
+                _controller.reset(animType: AnimType.TO_FRONT);
+                _controller.previous();
+                ProviderManager.getInstance().imageProvider.previous();
+              },
+            )),
+        Positioned(
+            right: 45,
+            child: IconButton(
+              icon: Icon(Icons.arrow_forward_ios),
+              color: Colors.red,
+              onPressed: () {
+                _controller.reset(
+                  animType: AnimType.TO_END,
+                  transformToBack: _customToBackTransform,
+                );
+                _controller.next();
+                ProviderManager.getInstance().imageProvider.next();
+              },
+            )),
+        Positioned(
+            bottom: 30,
+            child: Container(
+              margin: EdgeInsets.only(top: 15),
+              child: Text(
+                previewNode == null ? "" : previewNode.target,
+                style: TextStyle(color: Color(0xFF212121), fontSize: 28),
               ),
-            ],
-          ),
-        );
-      },
-    );
+            )),
+      ],
+    ));
   }
 }
 

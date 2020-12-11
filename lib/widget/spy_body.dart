@@ -30,28 +30,32 @@ class _SpyBodyWidgetState extends State<SpyBodyWidget> {
                   height: 10,
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 5,bottom: 10),
+                  margin: EdgeInsets.only(left: 5, bottom: 10),
                   child: Text(
                     '节点栈（栈顶到栈底）',
-                    style: TextStyle(color: Color(0xFF212121), fontSize: 18),
+                    style: TextStyle(color: Color(0xFF212121), fontSize: 28),
                   ),
                 ),
                 Expanded(child: SpyListWidget()),
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(left: 30, right: 30),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(
-                color: Colors.white,
-                width: 2,
-              ),
-            ),
-            child: SpyCardWidget(),
+          SizedBox(
+            width: 30,
           ),
+          Container(
+            width: 7,
+            decoration: BoxDecoration(
+              color: Colors.red,
+              borderRadius: BorderRadius.all(Radius.circular(7)),
+            ),
+          ),
+          SizedBox(
+            width: 30,
+          ),
+          Container(
+            child: SpyCardWidget(),
+          )
         ],
       ),
     );

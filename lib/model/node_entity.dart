@@ -8,6 +8,7 @@ class NodeEntity {
   bool homePage;
   String target;
   String base64;
+  bool preview = false;
 
   NodeEntity(
       {this.boundary,
@@ -18,7 +19,8 @@ class NodeEntity {
       this.params,
       this.homePage,
       this.target,
-      this.base64});
+      this.base64,
+      this.preview});
 
   NodeEntity.fromJson(Map<String, dynamic> json) {
     boundary = json['boundary'];
@@ -41,7 +43,8 @@ class NodeEntity {
     data['params'] = this.params;
     data['homePage'] = this.homePage;
     data['target'] = this.target;
-    data['target'] = this.base64;
+    data['base64'] = this.base64;
+    data['preview'] = this.preview;
     return data;
   }
 }
