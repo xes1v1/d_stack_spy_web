@@ -24,7 +24,7 @@ class Service {
   SocketConnect connector;
 
   Future<void> start() async {
-    var url = 'http://localhost:9202/getHost';
+    var url = 'http://0.0.0.0:9202/getHost';
     var response = await http.get(url);
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = convert.jsonDecode(response.body);
